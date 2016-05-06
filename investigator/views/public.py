@@ -16,7 +16,7 @@ from investigator.forms.user import RegisterForm
 from investigator.utils import flash_errors, render_extensions
 
 
-blueprint = Blueprint('public', __name__, static_folder="../static")
+blueprint = Blueprint('public', __name__, static_folder='../static')
 
 
 @login_manager.user_loader
@@ -68,28 +68,30 @@ def logout():
 def register():
     form = RegisterForm(request.form, csrf_enabled=False)
     if form.validate_on_submit():
-        new_user = User.create(username=form.username.data,
-                               first_name=form.first_name.data,
-                               last_name=form.last_name.data,
-                               email=form.email.data,
-                               password=form.password.data,
-                               active=True)
-        flash("Thank you for registering. You can now log in.", 'success')
+        User.create(username=form.username.data,
+                    first_name=form.first_name.data,
+                    last_name=form.last_name.data,
+                    email=form.email.data,
+                    password=form.password.data,
+                    active=True)
+        flash('Thank you for registering. You can now log in.', 'success')
         return redirect(url_for('public.home'))
     else:
         flash_errors(form)
     return render_extensions('public/register.html', form=form)
 
 
-@blueprint.route("/about/")
+@blueprint.route('/about/')
 def about():
     form = LoginForm(request.form)
-    return render_extensions("public/about.html", form=form)
+    return render_extensions('public/about.html', form=form)
+
 
 @blueprint.route('/robots.txt')
 @blueprint.route('/favicon.ico')
 def static_from_root():
     return send_from_directory(current_app.static_folder, request.path[1:])
+
 
 @blueprint.route('/sitemap.xml', methods=['GET'])
 def sitemap():
@@ -101,11 +103,11 @@ def sitemap():
     ten_days_ago = ten_days_ago.date().isoformat()
     # static pages
     for rule in current_app.url_map.iter_rules():
-        if "GET" in rule.methods and len(rule.arguments) == 0:
+        if 'GET' in rule.methods and len(rule.arguments) == 0:
             pages.append([rule.rule, ten_days_ago])
 
     sitemap_xml = render_template('public/sitemap_template.xml', pages=pages)
     response = make_response(sitemap_xml)
-    response.headers["Content-Type"] = "application/xml"
+    response.headers['Content-Type'] = 'application/xml'
 
     return response
