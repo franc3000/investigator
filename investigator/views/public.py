@@ -31,7 +31,10 @@ def home():
 
     if request.method == 'POST':
         if form.validate_on_submit():
-            flash('Questions sent.', 'success')
+            flash(
+                'Investigation about {}, {} requested.'.format(
+                    form.property_address.data, form.zip_code.data),
+                'success')
 
             # Send email.
             body = '''
