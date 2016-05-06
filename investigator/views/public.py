@@ -4,14 +4,17 @@ from flask import (Blueprint, request, render_template, flash, url_for, send_fro
                    redirect, current_app)
 import datetime
 
-from flask_login import login_user, login_required, logout_user
+from flask_login import login_required, logout_user
+from flask.ext.mail import Message, Mail
+
+from investigator.forms.property_request import ContactForm
 
 from investigator.extensions import login_manager
 from investigator.models.user import User
 from investigator.forms.public import LoginForm
 from investigator.forms.user import RegisterForm
 from investigator.utils import flash_errors, render_extensions
-from investigator.database import db
+
 
 blueprint = Blueprint('public', __name__, static_folder="../static")
 
@@ -21,19 +24,36 @@ def load_user(id):
     return User.get_by_id(int(id))
 
 
-@blueprint.route("/", methods=["GET", "POST"])
+@blueprint.route('/', methods=['GET', 'POST'])
 def home():
-    form = LoginForm(request.form)
-    # Handle logging in
+
+    form = ContactForm(request.form)
+
     if request.method == 'POST':
         if form.validate_on_submit():
-            login_user(form.user)
-            flash("You are logged in.", 'success')
-            redirect_url = request.args.get("next") or url_for("user.profile")
-            return redirect(redirect_url)
+            flash('Questions sent.', 'success')
+
+            # Send email.
+            body = '''
+                Question from investigator.
+
+                Name:             {}
+                Property address: {}
+                Zip Code:         {}
+                Questions:
+
+                {}
+            '''.format(form.name.data, form.property_address.data, form.zip_code.data, form.questions.data)
+            msg = Message(
+                'Question from investigator',
+                body=body,
+                sender=current_app.config['MAIL_DEFAULT_SENDER'],
+                recipients=current_app.config['ADMINS'])
+            Mail(current_app).send(msg)
+            return redirect('/')
         else:
             flash_errors(form)
-    return render_extensions("public/home.html", form=form)
+    return render_extensions('public/home.html', form=form)
 
 
 @blueprint.route('/logout/')

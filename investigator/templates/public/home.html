@@ -4,58 +4,42 @@
 
 <div class="body-content">
 
-<form class="form-horizontal">
-<fieldset>
+<form class="form-horizontal" method="POST">
+    {{ form.hidden_tag() }}
+    <div class="form-group">
+      {{ form.name.label(class='col-md-4 control-label') }}
+      <div class="col-md-5">
+          {{ form.name(class='form-control input-md', required='required') }}
+      </div>
+    </div>
+    <div class="form-group">
+      {{ form.property_address.label(class='col-md-4 control-label') }}
+      <div class="col-md-5">
+          {{ form.property_address(class='form-control input-md', placeholder='123 Main', required='required') }}
+      </div>
+    </div>
+    <div class="form-group">
+      {{ form.zip_code.label(class='col-md-4 control-label') }}
+      <div class="col-md-5">
+          {{ form.zip_code(class='form-control input-md', placeholder='78701', required='required') }}
+      </div>
+    </div>
+    <div class="form-group">
+      {{ form.questions.label(class='col-md-4 control-label') }}
+      <div class="col-md-4">
+          {{ form.questions(class='form-control input-md', required='required') }}
+      </div>
+    </div>
 
-<!-- Form Name -->
-<br>
-
-<!-- Text input-->
-<div class="form-group">
-  <label class="col-md-4 control-label" for="input_name">Your name</label>  
-  <div class="col-md-5">
-  <input id="input_name" name="input_name" type="text" placeholder="" class="form-control input-md" required="">
-    
-  </div>
-</div>
-
-<!-- Text input-->
-<div class="form-group">
-  <label class="col-md-4 control-label" for="input_property_address">Property Address</label>  
-  <div class="col-md-5">
-  <input id="input_property_address" name="input_property_address" type="text" placeholder="123 Main" class="form-control input-md" required="">
-    
-  </div>
-</div>
-
-<!-- Text input-->
-<div class="form-group">
-  <label class="col-md-4 control-label" for="input_zip">Zip Code</label>  
-  <div class="col-md-5">
-  <input id="input_zip" name="input_zip" type="text" placeholder="78701" class="form-control input-md" required="">
-    
-  </div>
-</div>
-
-<!-- Textarea -->
-<div class="form-group">
-  <label class="col-md-4 control-label" for="questions">Questions</label>
-  <div class="col-md-4">                     
-    <textarea class="form-control" id="questions" name="questions"></textarea>
-  </div>
-</div>
-
-<!-- Button -->
-<div class="form-group">
-  <label class="col-md-4 control-label" for="button"></label>
-  <div class="col-md-4">
-    <button id="button" name="button" class="btn btn-primary">Submit</button>
-  </div>
-</div>
+    <div class="from-group">
+      <div class="col-md-4"></div>
+      <div class="col-md-4">
+        <button id="button" name="button" class="btn btn-primary">Submit</button>
+      </div>
+    </div>
 
 </fieldset>
 </form>
-
 
 </div>
 {% endblock %}
