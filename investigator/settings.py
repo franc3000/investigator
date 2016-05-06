@@ -13,12 +13,13 @@ class Config(object):
     DEBUG_TB_ENABLED = False  # Disable Debug toolbar
     DEBUG_TB_INTERCEPT_REDIRECTS = False
     CACHE_TYPE = 'simple'  # Can be "memcached", "redis", etc.
-    MAIL_SERVER = ''
-    MAIL_PORT = 587
-    MAIL_USE_SSL = False
-    MAIL_USERNAME = ''
-    MAIL_PASSWORD = ''
-    MAIL_DEFAULT_SENDER = ''
+    MAIL_SERVER = os_env.get('INVESTIGATOR_MAIL_SERVER')
+    MAIL_PORT = int(os_env.get('INVESTIGATOR_MAIL_PORT', 25))
+    MAIL_USE_SSL = os_env.get('INVESTIGATOR_MAIL_USE_SSL') == '1'
+    MAIL_USERNAME = os_env.get('INVESTIGATOR_MAIL_USERNAME')
+    MAIL_PASSWORD = os_env.get('INVESTIGATOR_MAIL_PASSWORD')
+    MAIL_DEFAULT_SENDER = os_env.get('INVESTIGATOR_MAIL_DEFAULT_SENDER')
+    ADMINS = os_env.get('INVESTIGATOR_ADMINS', '').split(',')
     GOOGLE_ANALYTICS = ''
 
 
