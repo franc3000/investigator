@@ -66,7 +66,7 @@ def send_test_email():
     if not app.config.get('ADMINS'):
         errors.append('`ADMINS` setting is required and should contain a list of emails.')
 
-    if not isinstance(app.config['ADMINS'], list):
+    if not isinstance(app.config.get('ADMINS'), list):
         errors.append('`ADMINS` setting has to be list of emails.')
 
     if errors:
